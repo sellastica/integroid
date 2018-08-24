@@ -1,0 +1,199 @@
+<html>
+<head>
+	<style>
+		html {
+			background-color: #eee;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #eee;
+		}
+
+		body, th, td, blockquote, li {
+			font-size: 14px;
+			font-family: sans-serif;
+			line-height: 1.5;
+			color: #0a0a0a;
+		}
+
+		h1, h2, h3, h4, th {
+			font-weight: normal;
+		}
+
+		h1 {
+			margin-top: 1em;
+			font-size: 2em;
+		}
+
+		h2 {
+			margin-top: 2.5em;
+			font-size: 1.5em;
+		}
+
+		blockquote {
+			background-color: #eee;
+			padding: 1em;
+			border: solid 1px #ccc;
+			margin: 2em 0 1em 0;
+		}
+
+		.content {
+			width: 100%;
+			max-width: 700px;
+			margin: 1em auto;
+			background-color: #fff;
+		}
+
+		.content-in {
+			padding: 2em 2em 4em 2em;
+		}
+
+		.margin-top-0 {
+			margin-top: 0 !important;
+		}
+
+		.margin-top-1 {
+			margin-top: 1em !important;
+		}
+
+		.margin-top-2 {
+			margin-top: 2em !important;
+		}
+
+		.margin-bottom-1 {
+			margin-bottom: 1em !important;
+		}
+
+		.margin-bottom-2 {
+			margin-bottom: 2em !important;
+		}
+
+		.text-center {
+			text-align: center;
+		}
+
+		.support-footer {
+			text-align: center;
+			margin-top: 2em;
+		}
+
+		.label, .button {
+			display: inline-block;
+			text-decoration: none;
+			padding: 5px 10px;
+			border-radius: 3px;
+		}
+
+		.label.large, .button.large {
+			padding: 10px 50px;
+		}
+
+		.primary {
+			color: #fff;
+			background-color: #38a8eb;
+		}
+
+		.primary:hover {
+			background-color: #439cdb;
+		}
+
+		.secondary {
+			color: #000;
+			background-color: #e7fafc;
+		}
+
+		.secondary:hover {
+			background-color: #d7f2f4;
+		}
+
+		.success {
+			color: #fff;
+			background-color: #8ac748;
+		}
+
+		.success:hover {
+			background-color: #7eba4a;
+		}
+
+		.warning {
+			color: #000;
+			background-color: #fef9c9;
+			border: solid 1px #fce955;
+		}
+
+		.alert {
+			color: #fff;
+			background-color: #bc3e42;
+		}
+
+		.alert:hover {
+			background-color: #7eba4a;
+		}
+
+		.hidden {
+			color: #000;
+			background-color: #dbe2e4;
+		}
+
+		.hidden:hover {
+			background-color: #cfd4d6;
+		}
+
+		.text-center {
+			text-align: center;
+		}
+
+		.text-right {
+			text-align: right;
+		}
+
+		.callout {
+			padding: 1rem;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		table th, table td {
+			text-align: left;
+			padding: 0.5em;
+			border-bottom: solid 1px #f0f0f0;
+		}
+
+		table tr:hover {
+			background-color: #e7fafc;
+		}
+
+		.header {
+			text-align: center;
+			padding: 1.5em;
+			margin-bottom: 2.5em;
+		}
+
+		.header a {
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+<div class="content">
+	<div class="content-in">
+
+		{* logo *}
+		<div class="header" style="background-color: #eee">
+			<a href="">
+				<img src="https://www.integroid.com/assets/img/logos/logo_black_150x40.png"
+					 alt="Integroid" width="150" height="40">
+			</a>
+		</div>
+
+		{* content *}
+		{block content}{/block}
+	</div>
+</div>
+</body>
+</html>
