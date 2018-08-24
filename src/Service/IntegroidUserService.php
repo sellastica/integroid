@@ -20,12 +20,12 @@ class IntegroidUserService
 	/**
 	 * @param array $filterValues
 	 * @param \Sellastica\Entity\Configuration $configuration
-	 * @return \Suppliers\Entity\Product\Entity\ProductCollection
+	 * @return \Sellastica\Integroid\Entity\IntegroidUserCollection
 	 */
 	public function findBy(
 		array $filterValues,
 		\Sellastica\Entity\Configuration $configuration = null
-	): \Suppliers\Entity\Product\Entity\ProductCollection
+	): \Sellastica\Integroid\Entity\IntegroidUserCollection
 	{
 		return $this->em->getRepository(\Sellastica\Integroid\Entity\IntegroidUser::class)->findBy(
 			$filterValues, $configuration
@@ -34,24 +34,24 @@ class IntegroidUserService
 
 	/**
 	 * @param string $id
-	 * @return \Suppliers\Entity\Product\Entity\Product|null
+	 * @return \Sellastica\Integroid\Entity\IntegroidUser|null
 	 */
-	public function find(string $id): ?\Suppliers\Entity\Product\Entity\Product
+	public function find(string $id): ?\Sellastica\Integroid\Entity\IntegroidUser
 	{
-		return $this->em->getRepository(\Suppliers\Entity\Product\Entity\Product::class)->find($id);
+		return $this->em->getRepository(\Sellastica\Integroid\Entity\IntegroidUser::class)->find($id);
 	}
 
 	/**
 	 * @param array $filterValues
 	 * @param \Sellastica\Entity\Configuration $configuration
-	 * @return \Suppliers\Entity\Product\Entity\Product|null
+	 * @return \Sellastica\Integroid\Entity\IntegroidUser|null
 	 */
 	public function findOneBy(
 		array $filterValues,
 		\Sellastica\Entity\Configuration $configuration = null
-	): ?\Suppliers\Entity\Product\Entity\Product
+	): ?\Sellastica\Integroid\Entity\IntegroidUser
 	{
-		return $this->em->getRepository(\Suppliers\Entity\Product\Entity\Product::class)->findOneBy(
+		return $this->em->getRepository(\Sellastica\Integroid\Entity\IntegroidUser::class)->findOneBy(
 			$filterValues, $configuration
 		);
 	}
