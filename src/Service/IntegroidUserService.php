@@ -20,7 +20,7 @@ class IntegroidUserService
 	/**
 	 * @param array $filterValues
 	 * @param \Sellastica\Entity\Configuration $configuration
-	 * @return \Sellastica\Integroid\Entity\IntegroidUserCollection
+	 * @return \Sellastica\Integroid\Entity\IntegroidUserCollection|\Sellastica\Integroid\Entity\IntegroidUser[]
 	 */
 	public function findBy(
 		array $filterValues,
@@ -54,5 +54,26 @@ class IntegroidUserService
 		return $this->em->getRepository(\Sellastica\Integroid\Entity\IntegroidUser::class)->findOneBy(
 			$filterValues, $configuration
 		);
+	}
+
+	/**
+	 * @param string $email
+	 * @param string $password
+	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
+	 */
+	public function findOneByEmailAndPassword(
+		string $email,
+		string $password
+	): ?\Sellastica\Integroid\Entity\IntegroidUser
+	{
+		//admin users check
+		$users = $this->findBy(['email' => $email]);
+		foreach ($users as $user) {
+			if (\Nette\Security\Passwords::verify($password, $user->getPassword())) {
+				return $user;
+			}
+		}
+
+		return null;
 	}
 }
