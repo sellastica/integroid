@@ -14,6 +14,6 @@ class IntegroidUserDibiMapper extends \Sellastica\Entity\Mapping\DibiMapper
 	 */
 	protected function getTableName($databaseName = false): string
 	{
-		return 'myintegrod_com.admin_user';
+		return 'myintegroid_com.admin_user';
 	}
 }
