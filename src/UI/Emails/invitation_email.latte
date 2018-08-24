@@ -1,0 +1,37 @@
+{layout $layout}
+
+{block content}
+
+	<h1>Vítejte v Integroidu</h1>
+	<p>Zaregistrovali jsme váš zájem o některou z našich aplikací. Zasíláme vám přístupové údaje do administrace, v
+		které si můžete všechny aplikace nastavit a průběžně s nimi pracovat.</p>
+
+	<table class="margin-top-2 margin-bottom-2">
+		<tr>
+			<td>URL adresa</td>
+			<td><a href="{$project->getDefaultUrl()->getAbsoluteUrl()}">{$project->getDefaultUrl()->getAbsoluteUrl()}</a></td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td>{$email}</td>
+		</tr>
+		<tr>
+			<td>Heslo</td>
+			<td>{$password}</td>
+		</tr>
+	</table>
+
+	<p class="text-center margin-bottom-2">
+		<a href="{$project->getDefaultUrl()->getAbsoluteUrl()}" class="button primary">Přejít do administrace</a>
+	</p>
+
+	<p>
+		V případě jakýchokoliv dotazů nebo návrhů na zlepšení můžete využit naši technickou podporu a zaslat jí požadavek
+		<a href="{$project->getDefaultUrl()->getAbsoluteUrl()}admin/tickets">přímo z vaší administrace</a>.
+	</p>
+
+	<p class="margin-top-2">
+		Doufáme že budete s našimi službami spokojení,<br>
+		Integroid.cz
+	</p>
+{/block}
