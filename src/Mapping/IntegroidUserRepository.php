@@ -13,4 +13,13 @@ use Sellastica\Integroid\Mapping\IntegroidUserDao;
 class IntegroidUserRepository extends Repository implements IIntegroidUserRepository
 {
 	use \Sellastica\DataGrid\Mapping\Dibi\TFilterRulesRepository;
+
+	/**
+	 * @param string $hashId
+	 * @return \Sellastica\AdminUI\User\Entity\AdminUser|\Sellastica\Entity\Entity\IEntity
+	 */
+	public function findOneByHashId($hashId)
+	{
+		return $this->initialize($this->dao->findOneByHashId($hashId));
+	}
 }

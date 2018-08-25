@@ -12,4 +12,9 @@ use Sellastica\Integroid\Entity\IntegroidUser;
 class IntegroidUserRepositoryProxy extends RepositoryProxy implements IIntegroidUserRepository
 {
 	use \Sellastica\DataGrid\Mapping\Dibi\TFilterRulesRepositoryProxy;
+
+	public function findOneByHashId($hashId)
+	{
+		return $this->getRepository()->findOneByHashId($hashId);
+	}
 }

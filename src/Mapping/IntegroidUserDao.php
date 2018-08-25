@@ -10,6 +10,16 @@ class IntegroidUserDao extends \Sellastica\Entity\Mapping\Dao
 	use \Sellastica\DataGrid\Mapping\Dibi\TFilterRulesDao;
 
 	/**
+	 * @param string $hashId
+	 * @return \Sellastica\AdminUI\User\Entity\AdminUser|\Sellastica\Entity\Entity\IEntity
+	 */
+	public function findOneByHashId($hashId)
+	{
+		$adminUserId = $this->mapper->findOneByHashId($hashId);
+		return $this->find($adminUserId);
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	protected function getBuilder(

@@ -16,4 +16,15 @@ class IntegroidUserDibiMapper extends \Sellastica\Entity\Mapping\DibiMapper
 	{
 		return 'myintegroid_com.admin_user';
 	}
+
+	/**
+	 * @param string $hashId
+	 * @return int|false
+	 */
+	public function findOneByHashId($hashId)
+	{
+		return $this->getResourceWithIds()
+			->where('SHA1(CONCAT(email, id)) = %s', $hashId)
+			->fetchSingle();
+	}
 }

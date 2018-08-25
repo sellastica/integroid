@@ -57,6 +57,15 @@ class IntegroidUserService
 	}
 
 	/**
+	 * @param string $hash
+	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
+	 */
+	public function findOneByHashId(string $hash): ?\Sellastica\Integroid\Entity\IntegroidUser
+	{
+		return $this->em->getRepository(\Sellastica\Integroid\Entity\IntegroidUser::class)->findOneByHashId($hash);
+	}
+
+	/**
 	 * @param string $email
 	 * @param string $password
 	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
