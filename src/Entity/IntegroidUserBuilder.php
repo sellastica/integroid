@@ -7,7 +7,6 @@ use Sellastica\AdminUI\User\Model\AdminUserRole;
 use Sellastica\Identity\Model\Contact;
 use Sellastica\Identity\Model\Password;
 use Sellastica\Identity\Model\InvalidLogin;
-use Sellastica\Integroid\Entity\IntegroidUser;
 
 /**
  * @see IntegroidUser
