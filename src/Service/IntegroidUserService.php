@@ -5,16 +5,46 @@ class IntegroidUserService
 {
 	/** @var \Sellastica\Entity\EntityManager */
 	protected $em;
+	/** @var \Sellastica\SmtpMailer\SmtpMailer */
+	private $mailer;
+	/** @var \Sellastica\Project\Service\ProjectService */
+	private $projectService;
+	/** @var \Nette\Bridges\ApplicationLatte\ILatteFactory */
+	private $latteFactory;
+	/** @var int */
+	private $myIntegroidComProjectId;
+	/** @var \Nette\Localization\ITranslator */
+	private $translator;
+	/** @var string */
+	private $integroidEmail;
 
 
 	/**
+	 * @param int $myIntegroidComProjectId
+	 * @param string $integroidEmail
 	 * @param \Sellastica\Entity\EntityManager $em
+	 * @param \Sellastica\SmtpMailer\SmtpMailer $mailer
+	 * @param \Sellastica\Project\Service\ProjectService $projectService
+	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
+	 * @param \Nette\Localization\ITranslator $translator
 	 */
 	public function __construct(
-		\Sellastica\Entity\EntityManager $em
+		int $myIntegroidComProjectId,
+		string $integroidEmail,
+		\Sellastica\Entity\EntityManager $em,
+		\Sellastica\SmtpMailer\SmtpMailer $mailer,
+		\Sellastica\Project\Service\ProjectService $projectService,
+		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory,
+		\Nette\Localization\ITranslator $translator
 	)
 	{
 		$this->em = $em;
+		$this->mailer = $mailer;
+		$this->projectService = $projectService;
+		$this->latteFactory = $latteFactory;
+		$this->myIntegroidComProjectId = $myIntegroidComProjectId;
+		$this->translator = $translator;
+		$this->integroidEmail = $integroidEmail;
 	}
 
 	/**
@@ -84,5 +114,70 @@ class IntegroidUserService
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param int $projectId
+	 * @param string $firstName
+	 * @param string $lastName
+	 * @param string|\Sellastica\Identity\Model\Email $email
+	 * @param null $password
+	 * @return \Sellastica\Integroid\Entity\IntegroidUser
+	 */
+	public function create(
+		int $projectId,
+		string $firstName,
+		string $lastName,
+		$email,
+		$password = null
+	): \Sellastica\Integroid\Entity\IntegroidUser
+	{
+		if (!$email instanceof \Sellastica\Identity\Model\Email) {
+			$email = new \Sellastica\Identity\Model\Email($email);
+		}
+
+		if (!$password instanceof \Sellastica\Identity\Model\Password) {
+			$password = new \Sellastica\Identity\Model\Password($password ?? uniqid());
+		}
+
+		$user = \Sellastica\Integroid\Entity\IntegroidUserBuilder::create(
+			new \Sellastica\AdminUI\User\Model\AdminUserRole(\Sellastica\AdminUI\User\Model\AdminUserRole::ADMINISTRATOR),
+			new \Sellastica\Identity\Model\Contact($firstName, $lastName, $email)
+		)->projectId($projectId)
+			->password($password)
+			->build();
+		$user->hashPassword();
+		$this->em->persist($user);
+
+		return $user;
+	}
+
+	/**
+	 * @param \Sellastica\Integroid\Entity\IntegroidUser $user
+	 * @param $password
+	 */
+	public function sendInvitationEmail(
+		\Sellastica\Integroid\Entity\IntegroidUser $user,
+		$password
+	): void
+	{
+		$myIntegroidComProject = $this->projectService->find($this->myIntegroidComProjectId);
+		$latte = $this->latteFactory->create();
+		$body = $latte->renderToString(
+			__DIR__ . '/../UI/Emails/invitation_email.latte',
+			array_merge([
+				'project' => $myIntegroidComProject,
+				'email' => $user->getContact()->getEmail()->getEmail(),
+				'password' => $password,
+			],
+				['layout' => __DIR__ . '/../UI/Emails/@layout.latte']
+			)
+		);
+		$message = new \Nette\Mail\Message();
+		$message->setFrom($this->integroidEmail);
+		$message->addTo($user->getContact()->getEmail()->getEmail());
+		$message->setHtmlBody($body);
+		$message->setSubject($this->translator->translate('core.emails.invitation.subject'));
+		$this->mailer->send($message);
 	}
 }
