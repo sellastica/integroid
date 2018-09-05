@@ -8,13 +8,17 @@ class IntegroidUserDibiMapper extends \Sellastica\Entity\Mapping\DibiMapper
 {
 	use \Sellastica\DataGrid\Mapping\Dibi\TFilterRulesDibiMapper;
 
+
 	/**
 	 * @param bool $databaseName
 	 * @return string
 	 */
 	protected function getTableName($databaseName = false): string
 	{
-		return 'myintegroid_com.admin_user';
+		return sprintf(
+			'%s.admin_user',
+			 $this->environment->isNapojSe() ? 'klient_napojse_cz' : 'myintegroid_com'
+		);
 	}
 
 	/**
