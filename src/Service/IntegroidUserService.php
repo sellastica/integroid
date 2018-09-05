@@ -11,17 +11,17 @@ class IntegroidUserService
 	private $projectService;
 	/** @var \Nette\Bridges\ApplicationLatte\ILatteFactory */
 	private $latteFactory;
-	/** @var int */
-	private $myIntegroidComProjectId;
 	/** @var \Nette\Localization\ITranslator */
 	private $translator;
 	/** @var string */
 	private $integroidEmail;
+	/** @var \Sellastica\Integroid\Model\MasterProjectFactory */
+	private $masterProjectFactory;
 
 
 	/**
-	 * @param int $myIntegroidComProjectId
 	 * @param string $integroidEmail
+	 * @param \Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\SmtpMailer\SmtpMailer $mailer
 	 * @param \Sellastica\Project\Service\ProjectService $projectService
@@ -29,8 +29,8 @@ class IntegroidUserService
 	 * @param \Nette\Localization\ITranslator $translator
 	 */
 	public function __construct(
-		int $myIntegroidComProjectId,
 		string $integroidEmail,
+		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory,
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\SmtpMailer\SmtpMailer $mailer,
 		\Sellastica\Project\Service\ProjectService $projectService,
@@ -42,9 +42,9 @@ class IntegroidUserService
 		$this->mailer = $mailer;
 		$this->projectService = $projectService;
 		$this->latteFactory = $latteFactory;
-		$this->myIntegroidComProjectId = $myIntegroidComProjectId;
 		$this->translator = $translator;
 		$this->integroidEmail = $integroidEmail;
+		$this->masterProjectFactory = $masterProjectFactory;
 	}
 
 	/**
@@ -161,12 +161,11 @@ class IntegroidUserService
 		$password
 	): void
 	{
-		$myIntegroidComProject = $this->projectService->find($this->myIntegroidComProjectId);
 		$latte = $this->latteFactory->create();
 		$body = $latte->renderToString(
 			__DIR__ . '/../UI/Emails/invitation_email.latte',
 			array_merge([
-				'project' => $myIntegroidComProject,
+				'project' => $this->masterProjectFactory->create(),
 				'email' => $user->getContact()->getEmail()->getEmail(),
 				'password' => $password,
 			],
