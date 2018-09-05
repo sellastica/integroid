@@ -97,6 +97,15 @@ class IntegroidUserService
 
 	/**
 	 * @param string $email
+	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
+	 */
+	public function findOneByEmail(string $email): ?\Sellastica\Integroid\Entity\IntegroidUser
+	{
+		return $this->findOneBy(['email' => $email]);
+	}
+
+	/**
+	 * @param string $email
 	 * @param string $password
 	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
 	 */
@@ -161,11 +170,12 @@ class IntegroidUserService
 		$password
 	): void
 	{
+		$masterProject = $this->masterProjectFactory->create();
 		$latte = $this->latteFactory->create();
 		$body = $latte->renderToString(
 			__DIR__ . '/../UI/Emails/invitation_email.latte',
 			array_merge([
-				'project' => $this->masterProjectFactory->create(),
+				'project' => $masterProject,
 				'email' => $user->getContact()->getEmail()->getEmail(),
 				'password' => $password,
 			],
@@ -175,6 +185,7 @@ class IntegroidUserService
 		$message = new \Nette\Mail\Message();
 		$message->setFrom($this->integroidEmail);
 		$message->addTo($user->getContact()->getEmail()->getEmail());
+		$message->addBcc($masterProject->getEmail());
 		$message->setHtmlBody($body);
 		$message->setSubject($this->translator->translate('core.emails.invitation.subject'));
 		$this->mailer->send($message);
