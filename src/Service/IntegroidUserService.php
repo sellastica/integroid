@@ -162,11 +162,11 @@ class IntegroidUserService
 	}
 
 	/**
-	 * @param \Sellastica\Integroid\Entity\IntegroidUser $user
+	 * @param string $email
 	 * @param $password
 	 */
 	public function sendInvitationEmail(
-		\Sellastica\Integroid\Entity\IntegroidUser $user,
+		string $email,
 		$password
 	): void
 	{
@@ -176,7 +176,7 @@ class IntegroidUserService
 			__DIR__ . '/../UI/Emails/invitation_email.latte',
 			array_merge([
 				'project' => $masterProject,
-				'email' => $user->getContact()->getEmail()->getEmail(),
+				'email' => $email,
 				'password' => $password,
 			],
 				['layout' => __DIR__ . '/../UI/Emails/@layout.latte']
@@ -184,8 +184,7 @@ class IntegroidUserService
 		);
 		$message = new \Nette\Mail\Message();
 		$message->setFrom($this->integroidEmail);
-		$message->addTo($user->getContact()->getEmail()->getEmail());
-		$message->addBcc($masterProject->getEmail());
+		$message->addTo($email);
 		$message->setHtmlBody($body);
 		$message->setSubject($this->translator->translate('core.emails.invitation.subject'));
 		$this->mailer->send($message);
