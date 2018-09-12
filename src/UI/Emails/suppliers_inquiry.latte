@@ -1,0 +1,52 @@
+{layout $layout}
+
+{block content}
+
+	<h1>Návrh na nového dodavatele {$supplier_name}</h1>
+	<table>
+		<tr>
+			<td width="30%">Jméno dodavatele</td>
+			<td>{$supplier_name}</td>
+		</tr>
+		<tr>
+			<td>URL exportu</td>
+			<td><a href="{$feed_url}">{$feed_url}</a></td>
+		</tr>
+		<tr>
+			<td>Web</td>
+			<td><a href="{$supplier_homepage}">{$supplier_homepage}</a></td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td>{$supplier_email}</td>
+		</tr>
+		<tr>
+			<td>Telefon</td>
+			<td>{$supplier_phone}</td>
+		</tr>
+		<tr>
+			<td>Poznámka</td>
+			<td>{$note}</td>
+		</tr>
+	</table>
+
+	<h2>Navrhovatel</h2>
+	<table>
+		<tr>
+			<td width="30%">Jméno</td>
+			<td>{$full_name}</td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td>{$email}</td>
+		</tr>
+		<tr>
+			<td>Telefon</td>
+			<td>{$phone}</td>
+		</tr>
+		<tr>
+			<td>Typ zákazníka</td>
+			<td>{if $is_supplier}Dodavatel{else}Odběratel{/if}</td>
+		</tr>
+	</table>
+{/block}
