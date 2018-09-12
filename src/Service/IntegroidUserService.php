@@ -17,6 +17,8 @@ class IntegroidUserService
 	private $integroidEmail;
 	/** @var \Sellastica\Integroid\Model\MasterProjectFactory */
 	private $masterProjectFactory;
+	/** @var \Sellastica\Core\Model\Environment */
+	private $environment;
 
 
 	/**
@@ -27,6 +29,7 @@ class IntegroidUserService
 	 * @param \Sellastica\Project\Service\ProjectService $projectService
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
 	 * @param \Nette\Localization\ITranslator $translator
+	 * @param \Sellastica\Core\Model\Environment $environment
 	 */
 	public function __construct(
 		string $integroidEmail,
@@ -35,7 +38,8 @@ class IntegroidUserService
 		\Sellastica\SmtpMailer\SmtpMailer $mailer,
 		\Sellastica\Project\Service\ProjectService $projectService,
 		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory,
-		\Nette\Localization\ITranslator $translator
+		\Nette\Localization\ITranslator $translator,
+		\Sellastica\Core\Model\Environment $environment
 	)
 	{
 		$this->em = $em;
@@ -45,6 +49,7 @@ class IntegroidUserService
 		$this->translator = $translator;
 		$this->integroidEmail = $integroidEmail;
 		$this->masterProjectFactory = $masterProjectFactory;
+		$this->environment = $environment;
 	}
 
 	/**
@@ -172,14 +177,23 @@ class IntegroidUserService
 	{
 		$masterProject = $this->masterProjectFactory->create();
 		$latte = $this->latteFactory->create();
+
+		if ($this->environment->isNapojSe()) {
+			$layout = __DIR__ . '/../UI/Emails/@layout_napojse.latte';
+			$template = __DIR__ . '/../UI/Emails/invitation_email_napojse.latte';
+		} else {
+			$layout = __DIR__ . '/../UI/Emails/@layout.latte';;
+			$template = __DIR__ . '/../UI/Emails/invitation_email.latte';
+		}
+
 		$body = $latte->renderToString(
-			__DIR__ . '/../UI/Emails/invitation_email.latte',
+			$template,
 			array_merge([
 				'project' => $masterProject,
 				'email' => $email,
 				'password' => $password,
 			],
-				['layout' => __DIR__ . '/../UI/Emails/@layout.latte']
+				['layout' => $layout]
 			)
 		);
 		$message = new \Nette\Mail\Message();
