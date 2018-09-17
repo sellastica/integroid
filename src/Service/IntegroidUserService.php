@@ -14,7 +14,7 @@ class IntegroidUserService
 	/** @var \Nette\Localization\ITranslator */
 	private $translator;
 	/** @var string */
-	private $integroidEmail;
+	private $applicationEmail;
 	/** @var \Sellastica\Integroid\Model\MasterProjectFactory */
 	private $masterProjectFactory;
 	/** @var \Sellastica\Core\Model\Environment */
@@ -22,7 +22,7 @@ class IntegroidUserService
 
 
 	/**
-	 * @param string $integroidEmail
+	 * @param string $applicationEmail
 	 * @param \Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\SmtpMailer\SmtpMailer $mailer
@@ -32,7 +32,7 @@ class IntegroidUserService
 	 * @param \Sellastica\Core\Model\Environment $environment
 	 */
 	public function __construct(
-		string $integroidEmail,
+		string $applicationEmail,
 		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory,
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\SmtpMailer\SmtpMailer $mailer,
@@ -47,7 +47,7 @@ class IntegroidUserService
 		$this->projectService = $projectService;
 		$this->latteFactory = $latteFactory;
 		$this->translator = $translator;
-		$this->integroidEmail = $integroidEmail;
+		$this->applicationEmail = $applicationEmail;
 		$this->masterProjectFactory = $masterProjectFactory;
 		$this->environment = $environment;
 	}
@@ -181,9 +181,11 @@ class IntegroidUserService
 		if ($this->environment->isNapojSe()) {
 			$layout = __DIR__ . '/../UI/Emails/@layout_napojse.latte';
 			$template = __DIR__ . '/../UI/Emails/invitation_email_napojse.latte';
+			$subject = $this->translator->translate('core.emails.invitation.napojse_subject');
 		} else {
 			$layout = __DIR__ . '/../UI/Emails/@layout.latte';;
 			$template = __DIR__ . '/../UI/Emails/invitation_email.latte';
+			$subject = $this->translator->translate('core.emails.invitation.integroid_subject');
 		}
 
 		$body = $latte->renderToString(
@@ -197,10 +199,11 @@ class IntegroidUserService
 			)
 		);
 		$message = new \Nette\Mail\Message();
-		$message->setFrom($this->integroidEmail);
+		$message->setHeader('IsTransactional', 'True');
+		$message->setFrom($this->applicationEmail);
 		$message->addTo($email);
 		$message->setHtmlBody($body);
-		$message->setSubject($this->translator->translate('core.emails.invitation.subject'));
+		$message->setSubject($subject);
 		$this->mailer->send($message);
 	}
 }
