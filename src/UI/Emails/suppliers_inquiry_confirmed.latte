@@ -1,0 +1,20 @@
+{layout $layout}
+
+{block content}
+
+	<h1>Potvrzení zpracování dodavatele {$supplier}</h1>
+	<p>
+		Dobrý den,<br>
+		potvrzujeme, že máme veškeré potřebné údaje pro zpracování dodavatele {$supplier}.
+		Hotoví budeme maximálně za několik dní. Po dokončení Vám pošleme email.
+	</p>
+	<p>
+		Pokud budeme mít během zpracovávání nějaké dotazy,
+		{if $phone}ozveme se vám na telefonní číslo {$phone} nebo{/if}
+		napíšeme email.
+	</p>
+
+	<p class="margin-top-2">
+		Tým NapojSe.cz
+	</p>
+{/block}
