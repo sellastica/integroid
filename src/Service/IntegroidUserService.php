@@ -132,6 +132,15 @@ class IntegroidUserService
 
 	/**
 	 * @param int $projectId
+	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
+	 */
+	public function findOneByProjectId(int $projectId): ?\Sellastica\Integroid\Entity\IntegroidUser
+	{
+		return $this->findOneBy(['projectId' => $projectId]);
+	}
+
+	/**
+	 * @param int $projectId
 	 * @param string $firstName
 	 * @param string $lastName
 	 * @param string|\Sellastica\Identity\Model\Email $email
