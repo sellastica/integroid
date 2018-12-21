@@ -4,7 +4,7 @@
 
 <p>
 	dodavatele {$supplier->getTitle()} máme zpracovaného a můžete si ho přidat do svého účtu v NapojSe.
-	{if $supplier->isActive()}
+	{if $supplier->isVisible()}
 		Dodavatele najdete v katalogu nebo přímo na
 		<a href="https://klient.napojse.cz/admin/suppliers/catalog?supplierId={$supplier->getId()}">této URL adrese</a>.
 	{/if}
