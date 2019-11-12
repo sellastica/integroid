@@ -17,7 +17,7 @@ class IntegroidUserDibiMapper extends \Sellastica\Entity\Mapping\DibiMapper
 	{
 		return sprintf(
 			'%s.admin_user',
-			 $this->environment->isNapojSe() ? 'klient_napojse_cz' : 'myintegroid_com'
+			 $this->environment->isNapojse() ? 'klient_napojse_cz' : 'myintegroid_com'
 		);
 	}
 

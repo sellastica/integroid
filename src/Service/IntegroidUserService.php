@@ -131,6 +131,27 @@ class IntegroidUserService
 	}
 
 	/**
+	 * @param string $email
+	 * @param string $password
+	 * @return \Sellastica\Integroid\Entity\IntegroidUserCollection
+	 */
+	public function findByEmailAndPassword(
+		string $email,
+		string $password
+	): \Sellastica\Integroid\Entity\IntegroidUserCollection
+	{
+		//admin users check
+		$users = new \Sellastica\Integroid\Entity\IntegroidUserCollection();
+		foreach ($this->findBy(['email' => $email]) as $user) {
+			if (\Nette\Security\Passwords::verify($password, $user->getPassword())) {
+				$users[] = $user;
+			}
+		}
+
+		return $users;
+	}
+
+	/**
 	 * @param int $projectId
 	 * @return null|\Sellastica\Integroid\Entity\IntegroidUser
 	 */
@@ -187,7 +208,7 @@ class IntegroidUserService
 		$masterProject = $this->masterProjectFactory->create();
 		$latte = $this->latteFactory->create();
 
-		if ($this->environment->isNapojSe()) {
+		if ($this->environment->isNapojse()) {
 			$layout = __DIR__ . '/../UI/Emails/@layout_napojse.latte';
 			$template = __DIR__ . '/../UI/Emails/invitation_email_napojse.latte';
 			$subject = $this->translator->translate('core.emails.invitation.napojse_subject');
