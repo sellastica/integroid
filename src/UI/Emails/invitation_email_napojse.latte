@@ -2,14 +2,17 @@
 
 {block content}
 
-	<h1>Vítejte v Napojse.cz</h1>
-	<p>Děkujeme za Váš zájem a zasíláme vám přístupové údaje do administrace, v
-		které si můžete všechny vaše dodavatele nastavit a průběžně s nimi pracovat.</p>
+	<p>
+		Děkujeme za Váš zájem a zasíláme vám <strong>přístupové údaje</strong> do administrace, kde můžete všechny své
+		dodavatele spravovat.
+	</p>
 
-	<table class="margin-top-2 margin-bottom-2">
+	<table class="mt-30 mb-30">
 		<tr>
-			<td>URL adresa</td>
-			<td><a href="{$project->getDefaultUrl()->getAbsoluteUrl()}">{$project->getDefaultUrl()->getAbsoluteUrl()}</a></td>
+			<td>URL administrace</td>
+			<td>
+				<a href="{$project->getDefaultUrl()->getAbsoluteUrl()}">{$project->getDefaultUrl()->getAbsoluteUrl()}</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Email</td>
@@ -21,22 +24,20 @@
 		</tr>
 	</table>
 
-	<p class="text-center margin-bottom-2">
-		<a href="{$project->getDefaultUrl()->getAbsoluteUrl()}" class="button primary">Přejít do administrace</a>
+	<p class="text-center">
+		<a href="{$project->getDefaultUrl()->getAbsoluteUrl()}" class="btn btn-primary btn-lg">Přejít do
+			administrace</a>
 	</p>
 
+	<br>
 	<p>
-		Pokud běží váš e-shop na Shoptetu, nezapomeňte, že k tomu, abyste dostali produkty do e-shopu, potřebujete doplněk <a href="https://doplnky.shoptet.cz/automaticky-import-produktu">Automatický import produktů</a>.
+		Pokud váš e-shop běží na <strong>Shoptetu</strong>, nezapomeňte, že k tomu, abyste mohli produkty do e-shopu
+		importovat pravidelně,
+		potřebujete doplněk <a href="https://doplnky.shoptet.cz/automaticky-import-produktu">Automatický import
+			produktů</a>.
 		Ovšem ne napořád - jakmile bude Shotpet API umět vše potřebné, tento doplněk již nebude potřeba.
 	</p>
 
-	<p>
-		V případě jakýchokoliv dotazů nebo návrhů na zlepšení můžete využit naši technickou podporu a zaslat jí požadavek
-		<a href="{$project->getDefaultUrl()->getAbsoluteUrl()}admin/tickets">přímo z vaší administrace</a>.
-	</p>
-
-	<p class="margin-top-2">
-		Doufáme že budete s našimi službami spokojení,<br>
-		Napojse.cz
-	</p>
+    {* signature *}
+    {include '../../../../../../app/model/Suppliers/UI/Emails/signature.latte'}
 {/block}

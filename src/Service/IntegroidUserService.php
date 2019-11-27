@@ -5,7 +5,7 @@ class IntegroidUserService
 {
 	/** @var \Sellastica\Entity\EntityManager */
 	protected $em;
-	/** @var \Sellastica\SmtpMailer\SmtpMailer */
+	/** @var \Nette\Mail\IMailer */
 	private $mailer;
 	/** @var \Sellastica\Project\Service\ProjectService */
 	private $projectService;
@@ -19,13 +19,16 @@ class IntegroidUserService
 	private $masterProjectFactory;
 	/** @var \Sellastica\Core\Model\Environment */
 	private $environment;
+	/** @var string */
+	private $noreplyEmail;
 
 
 	/**
 	 * @param string $applicationEmail
+	 * @param string $noreplyEmail
 	 * @param \Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	 * @param \Sellastica\Entity\EntityManager $em
-	 * @param \Sellastica\SmtpMailer\SmtpMailer $mailer
+	 * @param \Nette\Mail\IMailer $mailer
 	 * @param \Sellastica\Project\Service\ProjectService $projectService
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
 	 * @param \Nette\Localization\ITranslator $translator
@@ -33,9 +36,10 @@ class IntegroidUserService
 	 */
 	public function __construct(
 		string $applicationEmail,
+		string $noreplyEmail,
 		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory,
 		\Sellastica\Entity\EntityManager $em,
-		\Sellastica\SmtpMailer\SmtpMailer $mailer,
+		\Nette\Mail\IMailer $mailer,
 		\Sellastica\Project\Service\ProjectService $projectService,
 		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory,
 		\Nette\Localization\ITranslator $translator,
@@ -50,6 +54,7 @@ class IntegroidUserService
 		$this->applicationEmail = $applicationEmail;
 		$this->masterProjectFactory = $masterProjectFactory;
 		$this->environment = $environment;
+		$this->noreplyEmail = $noreplyEmail;
 	}
 
 	/**
@@ -230,7 +235,8 @@ class IntegroidUserService
 		);
 		$message = new \Nette\Mail\Message();
 		$message->setHeader('IsTransactional', 'True');
-		$message->setFrom($this->applicationEmail);
+		$message->setFrom($this->noreplyEmail);
+		$message->addReplyTo($this->applicationEmail);
 		$message->addTo($email);
 		$message->setHtmlBody($body);
 		$message->setSubject($subject);
