@@ -166,42 +166,6 @@ class IntegroidUserService
 	}
 
 	/**
-	 * @param int $projectId
-	 * @param string $firstName
-	 * @param string $lastName
-	 * @param string|\Sellastica\Identity\Model\Email $email
-	 * @param null $password
-	 * @return \Sellastica\Integroid\Entity\IntegroidUser
-	 */
-	public function create(
-		int $projectId,
-		string $firstName,
-		string $lastName,
-		$email,
-		$password = null
-	): \Sellastica\Integroid\Entity\IntegroidUser
-	{
-		if (!$email instanceof \Sellastica\Identity\Model\Email) {
-			$email = new \Sellastica\Identity\Model\Email($email);
-		}
-
-		if (!$password instanceof \Sellastica\Identity\Model\Password) {
-			$password = new \Sellastica\Identity\Model\Password($password ?? uniqid());
-		}
-
-		$user = \Sellastica\Integroid\Entity\IntegroidUserBuilder::create(
-			new \Sellastica\AdminUI\User\Model\AdminUserRole(\Sellastica\AdminUI\User\Model\AdminUserRole::ADMINISTRATOR),
-			new \Sellastica\Identity\Model\Contact($firstName, $lastName, $email)
-		)->projectId($projectId)
-			->password($password)
-			->build();
-		$user->hashPassword();
-		$this->em->persist($user);
-
-		return $user;
-	}
-
-	/**
 	 * @param string $email
 	 * @param $password
 	 */
@@ -241,5 +205,49 @@ class IntegroidUserService
 		$message->setHtmlBody($body);
 		$message->setSubject($subject);
 		$this->mailer->send($message);
+	}
+
+	/**
+	 * @param int $projectId
+	 * @param string $firstName
+	 * @param string $lastName
+	 * @param string|\Sellastica\Identity\Model\Email $email
+	 * @param null $password
+	 * @return \Sellastica\Integroid\Entity\IntegroidUser
+	 */
+	public function create(
+		int $projectId,
+		string $firstName,
+		string $lastName,
+		$email,
+		$password = null
+	): \Sellastica\Integroid\Entity\IntegroidUser
+	{
+		if (!$email instanceof \Sellastica\Identity\Model\Email) {
+			$email = new \Sellastica\Identity\Model\Email($email);
+		}
+
+		if (!$password instanceof \Sellastica\Identity\Model\Password) {
+			$password = new \Sellastica\Identity\Model\Password($password ?? uniqid());
+		}
+
+		$user = \Sellastica\Integroid\Entity\IntegroidUserBuilder::create(
+			new \Sellastica\AdminUI\User\Model\AdminUserRole(\Sellastica\AdminUI\User\Model\AdminUserRole::ADMINISTRATOR),
+			new \Sellastica\Identity\Model\Contact($firstName, $lastName, $email)
+		)->projectId($projectId)
+			->password($password)
+			->build();
+		$user->hashPassword();
+		$this->em->persist($user);
+
+		return $user;
+	}
+
+	/**
+	 * @param \Sellastica\Integroid\Entity\IntegroidUser $integroidUser
+	 */
+	public function remove(\Sellastica\Integroid\Entity\IntegroidUser $integroidUser): void
+	{
+		$this->em->remove($integroidUser);
 	}
 }
